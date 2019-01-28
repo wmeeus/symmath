@@ -82,6 +82,9 @@ public class Mexpression extends Mnode {
 	public static Mnode add(Mnode a, Mnode n) {
 		if (a==null || a.isZero()) return n;
 		if (n==null || n.isZero()) return a;
+		if ((a instanceof Mvalue) && (n instanceof Mvalue)) {
+			return Mvalue.mkvalue(((Mvalue)a).value + ((Mvalue)n).value);
+		}
 		if ((a instanceof Mexpression) && (((Mexpression)a).op.equals("+")) ) {
 			((Mexpression)a).args.add(n);
 			return a;
@@ -89,6 +92,13 @@ public class Mexpression extends Mnode {
 		return new Mexpression(a, "+", n);
 	}
 
+	public static Mnode subtract(Mnode a, Mnode b) {
+		if ((a instanceof Mvalue) && (b instanceof Mvalue)) {
+			return Mvalue.mkvalue(((Mvalue)a).value - ((Mvalue)b).value);
+		}
+		return new Mexpression(a, "-", b);
+	}
+	
 	public static Mnode add(Mnode a, String n) {
 		return add(a, new Msymbol(n));
 	}

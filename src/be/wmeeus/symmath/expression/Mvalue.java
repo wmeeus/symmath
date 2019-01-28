@@ -1,5 +1,7 @@
 package be.wmeeus.symmath.expression;
 
+import java.util.Hashtable;
+
 public class Mvalue extends Mnode {
 	int value;
 	
@@ -21,4 +23,18 @@ public class Mvalue extends Mnode {
 	
 	public static Mvalue ZERO = new Mvalue(0);
 	public static Mvalue ONE  = new Mvalue(1);
+	
+	static Hashtable<Integer, Mvalue> values = new Hashtable<Integer, Mvalue>();
+	
+	static {
+		values.put(0, ZERO);
+		values.put(1, ONE);
+	}
+	
+	public static Mvalue mkvalue(int i) {
+		if (values.containsKey(i)) {
+			return values.get(i);
+		}
+		return new Mvalue(i);
+	}
 }
