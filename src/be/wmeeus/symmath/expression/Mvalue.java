@@ -2,6 +2,8 @@ package be.wmeeus.symmath.expression;
 
 import java.util.Hashtable;
 
+import be.wmeeus.symmath.util.Mexception;
+
 public class Mvalue extends Mnode {
 	int value;
 	
@@ -37,4 +39,9 @@ public class Mvalue extends Mnode {
 		}
 		return new Mvalue(i);
 	}
+	
+	public Mvalue eval(Hashtable<Msymbol, Integer> paramvalues) throws Mexception {
+		return this;
+	}
+
 }

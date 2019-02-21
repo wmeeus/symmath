@@ -1,6 +1,8 @@
 package be.wmeeus.symmath.expression;
 
-import java.util.ArrayList;
+import java.util.*;
+
+import be.wmeeus.symmath.util.Mexception;
 
 public class Mexpression extends Mnode {
 	String op;
@@ -98,7 +100,7 @@ public class Mexpression extends Mnode {
 		}
 		return new Mexpression(a, "-", b);
 	}
-	
+
 	public static Mnode add(Mnode a, String n) {
 		return add(a, new Msymbol(n));
 	}
@@ -124,6 +126,41 @@ public class Mexpression extends Mnode {
 
 	public ArrayList<Mnode> getArgs() {
 		return args;
+	}
+
+	public Mvalue eval(Hashtable<Msymbol, Integer> paramvalues) throws Mexception {
+		if (args == null || args.isEmpty()) return null;
+		if (args.size()==1) { // unary something
+			if (op.equals("-")) {
+				return Mvalue.mkvalue(0 - args.get(0).eval(paramvalues).get());
+			}
+			return args.get(0).eval(paramvalues);
+		}
+
+		int value = 0;
+		boolean start = true;
+		for (Mnode n: args) {
+			int arg = n.eval(paramvalues).get();
+			if (start) {
+				value = arg;
+				start = false;
+			} else {
+				if (op.equals("+")) {
+					value = value + arg;
+				} else if (op.equals("-")) {
+					value = value - arg;
+				} else if (op.equals("*")) {
+					value = value * arg;
+				} else if (op.equals("/")) {
+					value = value / arg;
+				} else if (op.equals("%")) {
+					value = value % arg;
+				} else {
+					throw new Mexception("Unsupported operation: " + op);
+				}
+			}
+		}
+		return Mvalue.mkvalue(value);
 	}
 
 }
