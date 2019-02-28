@@ -91,12 +91,6 @@ public class Mparameter extends Mnode {
 		return r;
 	}
 
-	public Mparameter transform(Mparameter p, Mexpression exp) throws Mexception {
-		
-		
-		return null;
-	}
-	
 	public ArrayList<Integer> image(Mnode f) throws Mexception {
 		Hashtable<Msymbol, Integer> paramvalues = new Hashtable<Msymbol, Integer>();
 		if (values == null || values.isEmpty()) return null;
@@ -108,7 +102,7 @@ public class Mparameter extends Mnode {
 				img.add(fi);
 			}
 		}
-		System.out.println("** Image ** of " + this + " under " + f + " is " + img);
+//		System.out.println("** Image ** of " + this + " under " + f + " is " + img);
 		return img;
 	}
 	
@@ -125,7 +119,7 @@ public class Mparameter extends Mnode {
 				dom.add(i);
 			}
 		}
-		System.out.println("** Domain ** of " + this + " under " + f + " is " + dom);
+//		System.out.println("** Domain ** of " + this + " under " + f + " is " + dom);
 		return dom;
 	}
 	
