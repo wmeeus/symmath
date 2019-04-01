@@ -18,6 +18,12 @@ public class Mparameter extends Mnode {
 		setValues(v);
 	}
 	
+	public Mparameter(String s, int v) throws Mexception {
+		symbol = Msymbol.mksymbol(s);
+		values = new ArrayList<Integer>();
+		values.add(v);
+	}
+	
 	public Mparameter(Msymbol s, String v) {
 		symbol = s;
 		setValues(v);
@@ -71,6 +77,10 @@ public class Mparameter extends Mnode {
 			return values.get(1) - values.get(0) + 1;
 		}
 		return values.size();
+	}
+	
+	public int getValue() /*TODO when multiple values: throws Mexception*/ {
+		return values.get(0);
 	}
 	
 	public String toString() {

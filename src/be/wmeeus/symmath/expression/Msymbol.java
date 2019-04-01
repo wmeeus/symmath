@@ -16,6 +16,10 @@ public class Msymbol extends Mnode {
 		return name;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	static Hashtable<String, Msymbol> symbols = new Hashtable<String, Msymbol>();
 	public static Msymbol mksymbol(String s) throws Mexception {
 		if (s == null) {

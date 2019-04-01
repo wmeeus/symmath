@@ -5,7 +5,12 @@ import java.util.Hashtable;
 import be.wmeeus.symmath.util.Mexception;
 
 public class Mvalue extends Mnode {
-	int value;
+	int value = 0;
+	boolean novalue = false;
+
+	public Mvalue() {
+		novalue = true;
+	}
 	
 	public Mvalue(int i) {
 		value = i;
@@ -23,8 +28,13 @@ public class Mvalue extends Mnode {
 		return (value==0);
 	}
 	
+	public boolean isNone() {
+		return novalue;
+	}
+	
 	public static Mvalue ZERO = new Mvalue(0);
 	public static Mvalue ONE  = new Mvalue(1);
+	public static Mvalue NONE = new Mvalue();
 	
 	static Hashtable<Integer, Mvalue> values = new Hashtable<Integer, Mvalue>();
 	
