@@ -4,31 +4,76 @@ import java.util.*;
 
 import be.wmeeus.symmath.util.Mexception;
 
+/**
+ * Class parameter describes a parameter i.e. an symbol and its set of values
+ * @author Wim Meeus
+ *
+ */
 public class Mparameter extends Mnode {
+	/**
+	 * The symbol 
+	 */
 	Msymbol symbol = null;
+	
+	/**
+	 * The set of values. This can either be an enumeration of all possible values 
+	 * (when isrange == false) or the minimum and maximum value of a range (when isrange == true).
+	 */
 	ArrayList<Integer> values = null;
+	
+	/**
+	 * Indicates whether the set of values is the minimum and maximum of a range (true), or an
+	 * enumeration of all parameter values (false)
+	 */
 	boolean isrange = false;
 	
+	/**
+	 * Returns the symbol
+	 * @return the symbol
+	 */
 	public Msymbol getSymbol() {
 		return symbol;
 	}
 	
+	/**
+	 * Construct a parameter from text input
+	 * @param s the symbol name
+	 * @param v the values: either a single value, a comma-seperated list of enumerated values, or
+	 *   a range <min>..<max>
+	 * @throws Mexception
+	 */
 	public Mparameter(String s, String v) throws Mexception {
 		symbol = Msymbol.mksymbol(s);
 		setValues(v);
 	}
 	
+	/**
+	 * Construct a parameter with a single value
+	 * @param s the symbol name
+	 * @param v the value
+	 * @throws Mexception
+	 */
 	public Mparameter(String s, int v) throws Mexception {
 		symbol = Msymbol.mksymbol(s);
 		values = new ArrayList<Integer>();
 		values.add(v);
 	}
 	
+	/**
+	 * Construct a parameter
+	 * @param s the symbol
+	 * @param v the values: either a single value, a comma-seperated list of enumerated values, or
+	 *   a range <min>..<max>
+	 */
 	public Mparameter(Msymbol s, String v) {
 		symbol = s;
 		setValues(v);
 	}
 
+	/**
+	 * Parse the value(s) from a String
+	 * @param v the input String containing the values
+	 */
 	private void setValues(String v) {
 		values = new ArrayList<Integer>();
 		if (v.contains("..")) {
@@ -46,7 +91,15 @@ public class Mparameter extends Mnode {
 		}
 	}
 	
+	/**
+	 * A static iterator to run over the values
+	 */
 	int it = 0;
+	
+	/**
+	 * Set the iterator to the first value and return the first value
+	 * @return the first parameter value
+	 */
 	public int start() {
 		if (isrange) {
 			it = values.get(0);
@@ -56,6 +109,10 @@ public class Mparameter extends Mnode {
 		return values.get(0);
 	}
 
+	/**
+	 * Set the iterator to the next value and return the next value
+	 * @return the next parameter value
+	 */
 	public int next() {
 		if (isrange) {
 			if (it < values.get(1)) {
@@ -72,17 +129,29 @@ public class Mparameter extends Mnode {
 		return -1;
 	}
 	
+	/**
+	 * Returns the number of parameter values
+	 * @return the number of parameter values
+	 */
 	public int count() {
 		if (isrange) {
 			return values.get(1) - values.get(0) + 1;
 		}
 		return values.size();
 	}
-	
+
+	/**
+	 * Returns the parameter value. Assumes that the parameter only has one value. Know what you're
+	 * doing when calling this method.
+	 * @return the parameter value
+	 */
 	public int getValue() /*TODO when multiple values: throws Mexception*/ {
 		return values.get(0);
 	}
-	
+
+	/**
+	 * Returns a String representation of this parameter
+	 */
 	public String toString() {
 		String r = symbol.toString() + ": ";
 		if (isrange) {
@@ -101,6 +170,12 @@ public class Mparameter extends Mnode {
 		return r;
 	}
 
+	/**
+	 * Calculates and returns the image of the parameter values for a function f
+	 * @param f the function
+	 * @return the image of the parameter values
+	 * @throws Mexception
+	 */
 	public ArrayList<Integer> image(Mnode f) throws Mexception {
 		Hashtable<Msymbol, Integer> paramvalues = new Hashtable<Msymbol, Integer>();
 		if (values == null || values.isEmpty()) return null;
@@ -112,10 +187,16 @@ public class Mparameter extends Mnode {
 				img.add(fi);
 			}
 		}
-//		System.out.println("** Image ** of " + this + " under " + f + " is " + img);
 		return img;
 	}
-	
+
+	/**
+	 * Calculates the domain of the parameter values of function f i.e. a set of parameter values that
+	 * have a unique image. 
+	 * @param f the function
+	 * @return the domain of the parameter values
+	 * @throws Mexception
+	 */
 	public ArrayList<Integer> domain(Mnode f) throws Mexception {
 		Hashtable<Msymbol, Integer> paramvalues = new Hashtable<Msymbol, Integer>();
 		if (values == null || values.isEmpty()) return null;
@@ -129,7 +210,6 @@ public class Mparameter extends Mnode {
 				dom.add(i);
 			}
 		}
-//		System.out.println("** Domain ** of " + this + " under " + f + " is " + dom);
 		return dom;
 	}
 	

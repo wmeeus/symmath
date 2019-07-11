@@ -4,20 +4,44 @@ import java.util.*;
 
 import be.wmeeus.symmath.util.Mexception;
 
+/** 
+ * Class Mparser contains a parser which converts String expressions to the internal format
+ * @author Wim Meeus
+ */
 public class Mparser {
-	
+	/**
+	 * The parsed expression
+	 */
 	Mnode parsed;
+	
+	/**
+	 * The source expression
+	 */
 	String source;
 	
+	/**
+	 * Construct a new parser
+	 */
 	public Mparser(String s) {
 		source = s;
 	}
-	
+
+	/**
+	 * List of parser tokens
+	 */
 	final String tokens = "()+-*/%";
+	
+	/**
+	 * List of supported operators
+	 */
 	final String ops = "+-*/%";
 
+	/**
+	 * Top level parser
+	 * @return the result of the parser
+	 * @throws Mexception
+	 */
 	public Mnode parse() throws Mexception {
-//		System.out.println("Mparser: source " + source);
 		if (source==null) return null;
 		ArrayList<Object> stack = new ArrayList<Object>();
 		StringTokenizer st = new StringTokenizer(source, tokens, true);
@@ -33,7 +57,6 @@ public class Mparser {
 		}
 		while (st.hasMoreTokens()) {
 			String tok = st.nextToken();
-//			System.out.println("Mparser: token " + tok);
 			if (tok.equals(")")) {
 				int obkt = stack.lastIndexOf("(");
 				if (obkt < 0) throw new Mexception("Bracket imbalance in " + source);
@@ -52,6 +75,12 @@ public class Mparser {
 		return parseMult(stack);
 	}
 	
+	/**
+	 * Parse an addition
+	 * @param stack the parse stack
+	 * @return the parsed addition
+	 * @throws Mexception
+	 */
 	private Mnode parseAdd(List<Object> stack) throws Mexception {
 		int pind = stack.lastIndexOf("+");
 		int mind = stack.lastIndexOf("-");
@@ -67,6 +96,12 @@ public class Mparser {
 		return parseMult(stack);
 	}
 	
+	/**
+	 * Parse a multiplication
+	 * @param stack the parse stack
+	 * @return the parsed multiplication
+	 * @throws Mexception
+	 */
 	private Mnode parseMult(List<Object> stack) throws Mexception {
 		int mind = stack.lastIndexOf("*");
 		int dind = stack.lastIndexOf("/");
