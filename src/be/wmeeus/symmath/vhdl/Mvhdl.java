@@ -27,6 +27,12 @@ public class Mvhdl {
 			// look up generic, create if new
 			return new VHDLgeneric(((Msymbol)n).toString(), VHDLinteger.INTEGER);
 		}
+		if (n instanceof Mrange) {
+			Mrange r = (Mrange)n;
+			VHDLnode ln = vhdl(r.getStart(), a);
+			VHDLnode rn = vhdl(r.getEnd(), a);
+			return new VHDLrange(ln, "downto", rn); // TODO determine to or downto
+		}
 		Mexpression e = (Mexpression)n;
 		ArrayList<VHDLnode> args = new ArrayList<VHDLnode>();
 		for (Mnode nn: e.getArgs()) {

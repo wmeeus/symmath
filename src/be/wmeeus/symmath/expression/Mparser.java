@@ -43,6 +43,14 @@ public class Mparser {
 	 */
 	public Mnode parse() throws Mexception {
 		if (source==null) return null;
+		if (source.contains("..")) {
+			int pos = source.indexOf("..");
+			String ls = source.substring(0, pos).trim();
+			String rs = source.substring(pos+2).trim();
+			Mnode ln = new Mparser(ls).parse();
+			Mnode rn = new Mparser(rs).parse();
+			return new Mrange(ln, rn);
+		}
 		ArrayList<Object> stack = new ArrayList<Object>();
 		StringTokenizer st = new StringTokenizer(source, tokens, true);
 		if (st.countTokens() < 2) {
